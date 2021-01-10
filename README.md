@@ -61,3 +61,44 @@ G28 ; Home all axes
 G29 ; Probe bed
 
 M500 ; Save results to EEPROM
+
+Recv:  bias: 82 d: 82 min: 198.39 max: 204.55 T:199.93 /0.00 B:32.46 /0.00 @:82 B@:0
+
+M301 P19.56 I0.71 D134.26 
+
+## Changing fan duct (PID Auto Tune)
+
+This step is very important, so don't blame the fan duct if you have not performed it and you are getting bad results :)
+Every time you install a new fan duct, it's highly recommended to perform the so-called "PID Auto Tune" procedure on your heat block. It's performed very easily - when your printer is cold, connect it to your PC, and start your preferred program that allows you to send GCODE commands directly to your printer. You can use Pronterface (http://www.pronterface.com/) or whatever you prefer (some slicers have this function built in).
+Next, decide what's your preferred print temperature - in my case it's 190C.
+You will also have to turn the fan ON.
+Execute the following GCODE command to turn it on:
+
+M106 S255 
+Now run the PID auto tune GCODE command (replace "190" with whatever temperature you use):
+
+M303 E0 S190 C8
+It will respond with
+Info:PID Autotune start
+
+Your printer will go through 8 cycles of heating / cooling, so it will take a couple of minutes.
+In the end, you will get a response, that looks something like this:
+
+bias: 92 d: 92 min: 196.56 max: 203.75
+Ku: 32.59 Tu: 54.92
+Clasic PID
+Kp: 19.56
+Ki: 0.71
+Kd: 134.26
+PID Autotune finished ! Place the Kp, Ki and Kd constants in the configuration.h
+
+Copy this response somewhere, otherwise it will quickly get lost in the idle "wait" messages.
+Now go to save your settings with the command (replace values):
+
+M301 P[Kp] I[Ki] D[Kd] 
+
+And save with:
+
+M500
+
+When you have tuned your heater properly, the temperature will fluctuate by just plus/minus 0.5 - 1C and will be very stable.
