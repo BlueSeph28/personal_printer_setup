@@ -62,10 +62,6 @@ G29 ; Probe bed
 
 M500 ; Save results to EEPROM
 
-Recv:  bias: 82 d: 82 min: 198.39 max: 204.55 T:199.93 /0.00 B:32.46 /0.00 @:82 B@:0
-
-M301 P19.56 I0.71 D134.26 
-
 ## Changing fan duct (PID Auto Tune)
 
 This step is very important, so don't blame the fan duct if you have not performed it and you are getting bad results :)
